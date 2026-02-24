@@ -1,6 +1,7 @@
-By: Cole Rowe 
+/*
+Developers: Cole Rowe, Ty Robicheaux
 Date: 2.24.26 
- 
+ */
 int laserPin = 10; 
 int sensorPin = 6; 
 int ledPin = 11; 
