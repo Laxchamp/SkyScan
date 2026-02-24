@@ -25,4 +25,4 @@ void loop() {
   } else { 
     // Laser intact → LED off 
     digitalWrite(ledPin, LOW); 
-  } 
+  }
