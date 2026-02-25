@@ -1,6 +1,10 @@
 /*
 Developers: Cole Rowe, Ty Robicheaux
 Date: 2.24.26 
+resource;
+
+
+
  */
 int laserPin = 10; 
 int sensorPin = 6; 
