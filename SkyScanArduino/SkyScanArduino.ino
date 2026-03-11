@@ -9,14 +9,16 @@ resource;
 // Pin definitions
 const int laserPin = 6;       // Laser emitter
 const int sensorPin = 3;      // Laser receiver
-const int ledPin = 5;         // LED indicator
+const int ledPin = 9;  
+
+       // LED indicator
 const int speakerPin = 10;    // Speaker
 
 void setup() {
   pinMode(laserPin, OUTPUT);    // Laser as output
   pinMode(sensorPin, INPUT);    // Sensor as input
   pinMode(ledPin, OUTPUT);      // LED as output
-  pinMode(speakerPin, OUTPUT);  // Speaker as output
+  pinMode(speakerPin, OUTPUT);  // S
 
   digitalWrite(laserPin, HIGH); // Turn laser on
 }
