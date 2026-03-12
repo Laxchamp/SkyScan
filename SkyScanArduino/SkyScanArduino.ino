@@ -1,46 +1,73 @@
 /*
 Developers: Cole Rowe, Ty Robicheaux
-Date: 3.2.26
+Date: 3.12.26
 resource;
 
 
 
  */
 // Pin definitions
-const int laserPin = 6;       // Laser emitter
-const int sensorPin = 3;      // Laser receiver
-const int ledPin = 9;  
+#include <Adafruit_NeoPixel.h>
 
-       // LED indicator
-const int speakerPin = 10;    // Speaker
+const int laserPin = 6;
+const int sensorPin = 3;
+const int ledPin = 5;
+const int speakerPin = 10;
+
+#define STRIP_PIN 11
+#define NUM_LEDS 8   // change if your strip has more LEDs
+
+Adafruit_NeoPixel strip(NUM_LEDS, STRIP_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
-  pinMode(laserPin, OUTPUT);    // Laser as output
-  pinMode(sensorPin, INPUT);    // Sensor as input
-  pinMode(ledPin, OUTPUT);      // LED as output
-  pinMode(speakerPin, OUTPUT);  // S
 
-  digitalWrite(laserPin, HIGH); // Turn laser on
+  pinMode(laserPin, OUTPUT);
+  pinMode(sensorPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(speakerPin, OUTPUT);
+
+  digitalWrite(laserPin, HIGH); // laser on
+
+  strip.begin();
+  strip.show(); // start with strip off
 }
 
 void loop() {
-  int sensorState = digitalRead(sensorPin); // Read receiver
+
+  int sensorState = digitalRead(sensorPin);
 
   if (sensorState == LOW) {
-    // Laser is broken, blink LED
+
+    // Turn LED on
     digitalWrite(ledPin, HIGH);
-    // Play ding sound
-    tone(speakerPin, 1000, 150); // 1000 Hz for 150 ms
-    delay(200);
-    tone(speakerPin, 1000, 150); // second ding
-    delay(200);
-    tone(speakerPin, 1000, 150); // third ding
-    delay(200);
+
+    // LED strip turns red
+    for(int i=0; i<NUM_LEDS; i++){
+      strip.setPixelColor(i, strip.Color(255,0,0));
+    }
+    strip.show();
+
+    // NEW speaker sound (rising alert tone)
+    tone(speakerPin, 1200);
+    delay(150);
+    tone(speakerPin, 1500);
+    delay(150);
+    tone(speakerPin, 1800);
+    delay(150);
+    noTone(speakerPin);
+
+    delay(400);
+
+  } 
+  else {
+
     digitalWrite(ledPin, LOW);
-    delay(500); // pause before next blink
-  } else {
-    // Laser is hitting the receiver
-    digitalWrite(ledPin, LOW);  // LED off
-    noTone(speakerPin);         // Stop speaker
+
+    // LED strip off
+    strip.clear();
+    strip.show();
+
+    noTone(speakerPin);
+
   }
 }
