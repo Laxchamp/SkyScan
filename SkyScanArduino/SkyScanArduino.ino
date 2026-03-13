@@ -6,39 +6,54 @@ resource;
 
 
  */
-// Pin definitions
-const int laserPin = 6;       // Laser emitter
-const int sensorPin = 3;      // Laser receiver
-const int ledPin = 5;         // LED indicator
-const int speakerPin = 10;    // Speaker
+const int laser1 = 11;
+const int sensor1 = 10;
+
+const int laser2 = 9;
+const int sensor2 = 8;
+
+const int laser3 = 7;
+const int sensor3 = 4;
+
+const int ledStrip = 6;
+const int speaker = 5;
 
 void setup() {
-  pinMode(laserPin, OUTPUT);    // Laser as output
-  pinMode(sensorPin, INPUT);    // Sensor as input
-  pinMode(ledPin, OUTPUT);      // LED as output
-  pinMode(speakerPin, OUTPUT);  // Speaker as output
 
-  digitalWrite(laserPin, HIGH); // Turn laser on
+  pinMode(laser1, OUTPUT);
+  pinMode(laser2, OUTPUT);
+  pinMode(laser3, OUTPUT);
+
+  pinMode(sensor1, INPUT);
+  pinMode(sensor2, INPUT);
+  pinMode(sensor3, INPUT);
+
+  pinMode(ledStrip, OUTPUT);
+  pinMode(speaker, OUTPUT);
+
+  // Turn lasers on
+  digitalWrite(laser1, HIGH);
+  digitalWrite(laser2, HIGH);
+  digitalWrite(laser3, HIGH);
 }
 
 void loop() {
-  int sensorState = digitalRead(sensorPin); // Read receiver
 
-  if (sensorState == LOW) {
-    // Laser is broken, blink LED
-    digitalWrite(ledPin, HIGH);
-    // Play ding sound
-    tone(speakerPin, 1000, 150); // 1000 Hz for 150 ms
-    delay(200);
-    tone(speakerPin, 1000, 150); // second ding
-    delay(200);
-    tone(speakerPin, 1000, 150); // third ding
-    delay(200);
-    digitalWrite(ledPin, LOW);
-    delay(500); // pause before next blink
+  int s1 = digitalRead(sensor1);
+  int s2 = digitalRead(sensor2);
+  int s3 = digitalRead(sensor3);
+
+  // If any beam is broken
+  if (s1 == LOW || s2 == LOW || s3 == LOW) {
+
+    digitalWrite(ledStrip, HIGH);
+
+    tone(speaker, 1000); // play sound
+
   } else {
-    // Laser is hitting the receiver
-    digitalWrite(ledPin, LOW);  // LED off
-    noTone(speakerPin);         // Stop speaker
+
+    digitalWrite(ledStrip, LOW);
+
+    noTone(speaker); // stop sound
   }
 }
