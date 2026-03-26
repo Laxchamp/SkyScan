@@ -4,18 +4,22 @@
 const int sensor1 = 2;
 const int sensor2 = 3;
 
-// LED strip setup
+// Speaker pin
+const int speaker = 5;
+
+// LED strip
 #define LED_PIN 6
-#define NUM_LEDS 8  // change to your strip length
+#define NUM_LEDS 8
 
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   pinMode(sensor1, INPUT);
   pinMode(sensor2, INPUT);
+  pinMode(speaker, OUTPUT);
 
   strip.begin();
-  strip.show(); // initialize LEDs off
+  strip.show(); // LEDs off
 }
 
 void loop() {
@@ -25,14 +29,24 @@ void loop() {
   // If either beam is broken
   if (beam1 == LOW || beam2 == LOW) {
     setColor(255, 0, 0); // RED
+
+    // WEE-OO siren
+    for (int freq = 1000; freq <= 3000; freq += 100) {
+      tone(speaker, freq);
+      delay(5);
+    }
+    for (int freq = 3000; freq >= 1000; freq -= 100) {
+      tone(speaker, freq);
+      delay(5);
+    }
+
   } else {
     setColor(0, 0, 0); // OFF
+    noTone(speaker);   // silence
   }
-
-  delay(50);
 }
 
-// Function to set all LEDs
+// Set all LEDs
 void setColor(int r, int g, int b) {
   for (int i = 0; i < NUM_LEDS; i++) {
     strip.setPixelColor(i, strip.Color(r, g, b));
